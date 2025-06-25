@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import { type NextFunction, type Request, type Response } from 'express'
-import { AuthRequest, DecodedToken, ERROR_CODE, IJWTPayload } from '../interface'
+import {  DecodedToken, ERROR_CODE, IJWTPayload } from '../interface'
 import { logger } from '../setup/logging'
 
 dotenv.config()
@@ -44,7 +44,7 @@ export const verifyToken = (req: Request,
         // if (typeof decoded === "object" && "gid" in decoded) {
         //     req.token = { gid: decoded.gid as string }; // Assign nilai gid ke token
         //   }
-        req.token = decoded as DecodedToken
+        req.token = decoded as any
 
         // req.body = { ...decoded, ...req.body }
         // req.token

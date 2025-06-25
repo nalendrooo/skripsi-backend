@@ -250,7 +250,12 @@ export const getAllUser = async ({
                 }
             },
             code: true,
-            telephone: true
+            telephone: true,
+            _count: {
+                select: {
+                    itemOut: true
+                }
+            }
         },
         skip: (Number(page) - 1) * Number(perPage),
         take: Number(perPage),

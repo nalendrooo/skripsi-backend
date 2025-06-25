@@ -24,5 +24,6 @@ export const mapperUsers = (data: DTOUserPrisma[]) => {
     divisionTitle: user.division?.title || '',
     code: user.code,
     telephone: user.telephone,
+    _count: user._count.itemOut
   }));
 };

@@ -76,6 +76,9 @@ export const getAllItemOut = async ({
 
             }
         },
+        orderBy: {
+            createdAt: 'desc'
+        },
         skip: (Number(page) - 1) * Number(perPage),
         take: Number(perPage),
     })

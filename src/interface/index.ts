@@ -108,11 +108,11 @@ export interface IJWTPayload {
     gid: string
 }
 
-export interface AuthRequest extends Request {
-    token: {
-        gid: string
-    }
-}
+// export interface AuthRequest extends Request {
+//     token: {
+//         gid: string
+//     }
+// }
 
 // models/DecodedToken.ts
 export interface DecodedToken {

@@ -9,7 +9,7 @@ datasource db {
 
 model Users {
   id         Int       @id @default(autoincrement())
-  telephone  String
+  telephone  String    @unique
   name       String
   code       String?
   divisionId Int       @map("division_id")
@@ -23,7 +23,7 @@ model Users {
 
 model Admin {
   id          Int           @id @default(autoincrement())
-  telephone   String        @unique
+  telephone   String
   name        String
   email       String
   password    String

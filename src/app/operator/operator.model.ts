@@ -10,3 +10,4 @@ export interface IBodyLoginOperatorModel {
     email: string;
     password: string;
 }
+

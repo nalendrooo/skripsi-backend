@@ -20,7 +20,7 @@ publicRouter.get('/users', (req, res) => {
     res.json('Hello users!');
 });
 publicRouter.use('/admin', verifyToken, adminRoute);
-publicRouter.use('/login', operatorRoute);
+publicRouter.use('/operator', operatorRoute);
 publicRouter.use('/user', userRoute);
 // publicRouter.use('/material', getAllMaterialContentType);
 // publicRouter.use('/access', erklikaRoute);

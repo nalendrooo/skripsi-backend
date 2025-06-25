@@ -26,20 +26,22 @@ export const createItemBalance = async ({
     })
 
     if (!cekItem) {
-        return new AppError(ERROR_CODE.NOT_FOUND.code, 'Item tidak ditemukan')
+        return new AppError(ERROR_CODE.NOT_FOUND.code, 'Barang tidak ditemukan')
     }
 
     if (cekItem.stock < body.amount) {
         return new AppError(ERROR_CODE.BAD_REQUEST.code, 'Stock tidak mencukupi')
     }
 
-   const reduction = await itemRepository.stockItemReduction({
+    const balance = cekItem.stock - body.amount
+
+    const reduction = await itemRepository.stockItemReduction({
         itemId: itemId,
-        stock: amount
+        stock: balance
     })
 
     return await itemBalanceRepository.createItemBalance({
-        data: body,
+        data: { ...body, amount: balance },
         finalStock: reduction.stock,
         initialStock: cekItem.stock,
         adminId: token.id

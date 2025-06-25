@@ -1,5 +1,5 @@
 export interface IBodyCreateItemModel {
-    title: string;
+  title: string;
   code: string;
   brand?: string | null;
   location?: string | null;

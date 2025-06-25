@@ -31,6 +31,61 @@ export const createOperator = async ({
     })
 }
 
+export const getAllOperator = async ({
+    query
+}: {
+    query: IQueryParams
+}) => {
+    const {
+        page = 1,
+        perPage = 10,
+        search = ''
+    } = query
+
+    return await prisma.admin.findMany({
+        where: {
+            adminRole: ADMIN_ROLE.OPERATOR,
+            name: {
+                contains: search
+            }
+        },
+        select: {
+            id: true,
+            name: true,
+            email: true,
+            telephone: true,
+            adminRole: true,
+            updatedAt: true,
+            createdAt: true,
+            division: {
+                select: {
+                    title: true
+                }
+            },
+        },
+        skip: (Number(page) - 1) * Number(perPage),
+        take: Number(perPage),
+    })
+}
+export const getCountAllOperator = async ({
+    query
+}: {
+    query: IQueryParams
+}) => {
+    const {
+        search
+    } = query
+
+    return await prisma.admin.count({
+        where: {
+            adminRole: ADMIN_ROLE.OPERATOR,
+            name: {
+                contains: search
+            }
+        },
+    })
+}
+
 // export const getUnitById = async ({
 //     unitId
 // }: {

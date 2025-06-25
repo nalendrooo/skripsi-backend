@@ -7,23 +7,23 @@ import * as operatorService from '../operator/operator.service'
 
 import { NextFunction, Request, Response } from "express"
 
-// export const getAllCategory = async (
-//     req: Request,
-//     res: Response,
-//     next: NextFunction,
-// ) => {
-//     const { query } = req
-//     const data = await categoryService.getAllCategory({
-//         query
-//     })
+export const getAllOperator = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { query } = req
+    const data = await operatorService.getAllOperator({
+        query
+    })
 
-//     if (data instanceof AppError) {
-//         next(data)
-//         return
-//     }
+    if (data instanceof AppError) {
+        next(data)
+        return
+    }
 
-//     ResponseHandler.ok(res, data, `Data berhasil di ambil`)
-// }
+    ResponseHandler.ok(res, data, `Data berhasil di ambil`)
+}
 
 export const loginOperator = async (
     req: Request,
@@ -41,5 +41,8 @@ export const loginOperator = async (
         return
     }
 
-    ResponseHandler.ok(res, data, `Data berhasil dibuat`)
+    return res
+        .status(200)
+        .cookie("token", data.token, { maxAge: 60 * 60 * 1000, httpOnly: true })
+        .json({ status: 'success', message: 'Anda berhasil login', data, })
 }

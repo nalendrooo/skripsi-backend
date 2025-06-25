@@ -17,4 +17,7 @@ interface DTOUserPrisma {
     };
     code: string | null
     telephone: string;
+    _count: {
+        itemOut: number;
+    }
 }

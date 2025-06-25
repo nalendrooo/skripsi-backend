@@ -9,6 +9,7 @@ import { AppError } from "../../middleware/error-handler";
 import { IBodyCreateOperatorModel, IBodyLoginOperatorModel } from "./operator.model";
 
 dotenv.config()
+
 // import { IBodyCreateUnitModel } from "./operator.model";
 
 // export const updateUnit = async ({
@@ -135,6 +136,7 @@ export const loginOperator = async ({
         {
             name: user?.name,
             id: user.id,
+            email: user?.email,
             telephone: user?.telephone,
             role: user?.adminRole
         },
@@ -205,4 +207,29 @@ export const loginOperator = async ({
     //     };
     // }
 
+}
+
+export const getAllOperator = async ({
+    query
+}: {
+    query: IQueryParams
+}) => {
+    const { page = '1', perPage = '10' } = query
+    const [data, count] = await Promise.all([
+        operatorRepository.getAllOperator({
+            query
+        }),
+        operatorRepository.getCountAllOperator({
+            query
+        }),
+    ])
+console.log(data)
+    const meta = metaPagination(
+        Number(page),
+        Number(perPage),
+        data.length,
+        count,
+    )
+
+    return { data, meta }
 }
