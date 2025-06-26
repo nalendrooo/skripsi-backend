@@ -43,6 +43,12 @@ export const loginOperator = async (
 
     return res
         .status(200)
-        .cookie("token", data.token, { maxAge: 60 * 60 * 1000, httpOnly: false, secure: false, sameSite: 'none' })
+        .cookie("token", data.token, {
+            maxAge: 60 * 60 * 1000,
+            httpOnly: false,
+            path: '/',
+            secure: false, 
+            sameSite: 'lax'
+        })
         .json({ status: 'success', message: 'Anda berhasil login', data, })
 }
