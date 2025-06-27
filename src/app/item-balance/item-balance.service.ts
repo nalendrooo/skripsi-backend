@@ -37,12 +37,12 @@ export const createItemBalance = async ({
 
     const reduction = await itemRepository.stockItemReduction({
         itemId: itemId,
-        stock: body.amount
+        stock: balance
     })
 
     return await itemBalanceRepository.createItemBalance({
-        data: { ...body },
-        finalStock: reduction.stock,
+        data: { ...body, amount: balance },
+        finalStock: body.amount,
         initialStock: cekItem.stock,
         adminId: token.id
     })
