@@ -87,7 +87,9 @@ export const createItem = async ({
     data: IBodyCreateItemModel,
 }) => {
     return await prisma.item.create({
-        data
+        data: {
+            ...data, stock: 0
+        }
     })
 }
 

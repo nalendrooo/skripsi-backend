@@ -4,7 +4,7 @@ export interface IBodyCreateItemModel {
   brand?: string | null;
   location?: string | null;
   supplier?: string | null;
-  stock: number;
+  price: number;
   description?: string | null;
   unitId: number;
   typeId: number;
