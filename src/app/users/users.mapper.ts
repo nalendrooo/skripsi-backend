@@ -22,6 +22,7 @@ export const mapperUsers = (data: DTOUserPrisma[]) => {
     id: user.id,
     name: user.name,
     isActive: user.isActive,
+    divisionId: user.divisionId,
     divisionTitle: user.division?.title || '',
     code: user.code,
     telephone: user.telephone,

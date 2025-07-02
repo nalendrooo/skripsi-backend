@@ -251,3 +251,42 @@ export const createUser = async ({
         data: body
     })
 }
+export const updateUser = async ({
+    body,
+    userId
+}: {
+    body: IBodyCreateUserModel
+    userId: number
+
+}) => {
+    const { divisionId, telephone } = body
+
+    const user = await userRepository.getUserById({
+        userId
+    })
+
+    if (!user) {
+        return new AppError(ERROR_CODE.NOT_FOUND.code, 'User tidak ditemukan')
+    }
+
+    const cekDivision = await divisionRepository.getDivisionById({
+        divisionId: Number(divisionId)
+    })
+
+    if (!cekDivision) {
+        return new AppError(ERROR_CODE.NOT_FOUND.code, 'Division tidak ditemukan')
+    }
+
+    const cekUser = await userRepository.getUserByTelephone({
+        telephone
+    })
+
+    if (cekUser && cekUser.id !== userId) {
+        return new AppError(ERROR_CODE.BAD_REQUEST.code, 'Nomor telephone sudah terdaftar')
+    }
+
+    return await userRepository.updateUser({
+        userId,
+        data: body
+    })
+}

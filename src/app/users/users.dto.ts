@@ -15,6 +15,7 @@ interface DTOUserPrisma {
     division: {
         title: string;
     };
+    divisionId: number;
     isActive: boolean;
     code: string | null
     telephone: string;

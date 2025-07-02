@@ -38,6 +38,25 @@ export const createItem = async ({
         data: body,
     })
 }
+export const updateItem = async ({
+    body,
+    itemId
+}: {
+    body: IBodyCreateItemModel,
+    itemId: number
+}) => {
+
+    const cekItem = await itemRepository.getItemById({ itemId })
+
+    if (!cekItem) {
+        return new AppError(ERROR_CODE.NOT_FOUND.code, 'Item tidak ditemukan')
+    }
+
+    return await itemRepository.updateItem({
+        itemId,
+        data: body,
+    })
+}
 
 export const getAllItem = async ({
     query

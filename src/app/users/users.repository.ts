@@ -5,17 +5,17 @@ import { IQueryParams } from "../../interface"
 import { prisma } from "../../setup/prisma"
 import { IBodyCreateUserModel } from "./users.model"
 
-// export const getUserById = async ({
-//     gid
-// }: {
-//     gid: string
-// }) => {
-//     return await prisma.users.findUnique({
-//         where: {
-//             gid
-//         }
-//     })
-// }
+export const getUserById = async ({
+    userId: id
+}: {
+    userId: number
+}) => {
+    return await prisma.users.findFirst({
+        where: {
+            id
+        }
+    })
+}
 
 // export const insertUser = async ({
 //     data
@@ -204,6 +204,23 @@ export const createUser = async ({
         data
     })
 }
+export const updateUser = async ({
+    data,
+    userId: id
+}: {
+    data: IBodyCreateUserModel
+    userId: number
+}) => {
+    return await prisma.users.update({
+        where: {
+            id
+        },
+        data: {
+            ...data,
+            updatedAt: new Date()
+        }
+    })
+}
 
 export const getUserByTelephone = async ({
     telephone
@@ -239,11 +256,15 @@ export const getAllUser = async ({
                         contains: search,
                     }
                 }
-            ]
+            ],
+            NOT: {
+                divisionId: 1
+            }
         },
         select: {
             id: true,
             name: true,
+            divisionId: true,
             division: {
                 select: {
                     title: true

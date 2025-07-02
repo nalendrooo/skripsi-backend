@@ -92,6 +92,23 @@ export const createItem = async ({
         }
     })
 }
+export const updateItem = async ({
+    data,
+    itemId: id
+}: {
+    data: IBodyCreateItemModel,
+    itemId: number
+}) => {
+    return await prisma.item.update({
+        where: {
+            id
+        },
+        data: {
+            ...data,
+            updatedAt: new Date()
+        }
+    })
+}
 
 export const stockItemReduction = async ({
     itemId,

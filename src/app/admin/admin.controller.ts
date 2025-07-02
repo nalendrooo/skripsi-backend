@@ -215,6 +215,25 @@ export const createItem = async (
 
     ResponseHandler.created(res, data, `Data berhasil dibuat`)
 }
+export const updateItem = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { body, params: { itemId } } = req
+
+    const data = await itemService.updateItem({
+        itemId: Number(itemId),
+        body
+    })
+
+    if (data instanceof AppError) {
+        next(data)
+        return
+    }
+
+    ResponseHandler.ok(res, data, `Data berhasil diupdate`)
+}
 
 export const getAllItem = async (
     req: Request,
@@ -270,6 +289,24 @@ export const createUser = async (
 
     ResponseHandler.created(res, data, `Data berhasil di buat`)
 }
+export const updateUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { query, body, token, params: { userId } } = req
+    const data = await userService.updateUser({
+        userId: Number(userId),
+        body,
+    })
+
+    if (data instanceof AppError) {
+        next(data)
+        return
+    }
+
+    ResponseHandler.ok(res, data, `Data berhasil diupdate`)
+}
 
 
 //OPERATOR
@@ -290,6 +327,25 @@ export const createOperator = async (
     }
 
     ResponseHandler.created(res, data, `Data berhasil dibuat`)
+}
+export const updateOperator = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { body, params: { operatorId } } = req
+
+    const data = await operatorService.updateOperator({
+        operatorId: Number(operatorId),
+        body
+    })
+
+    if (data instanceof AppError) {
+        next(data)
+        return
+    }
+
+    ResponseHandler.ok(res, data, `Data berhasil diupdate`)
 }
 
 //ITEM_OUT

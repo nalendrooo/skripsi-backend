@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { ERROR_CODE, IQueryParams } from "../../interface"
 import { metaPagination } from "../../utils/meta-pagination";
 import { AppError } from "../../middleware/error-handler";
-import { IBodyCreateOperatorModel, IBodyLoginOperatorModel } from "./operator.model";
+import { IBodyCreateOperatorModel, IBodyLoginOperatorModel, IBodyUpdateOperatorModel } from "./operator.model";
 
 dotenv.config()
 
@@ -104,6 +104,31 @@ export const createOperator = async ({
             'User gagal dibuat',
         )
     }
+
+    return { name: user?.name }
+}
+export const updateOperator = async ({
+    body,
+    operatorId
+}: {
+    body: IBodyUpdateOperatorModel
+    operatorId: number
+}) => {
+
+    const operator = await operatorRepository.getOperatorById({ operatorId })
+
+    if (!operator) {
+        return new AppError(
+            ERROR_CODE.NOT_FOUND.code,
+            'Petugas tidak ditemukan',
+        )
+    }
+
+    const user = await operatorRepository.updateOperator({
+        data: { ...body},
+        operatorId,
+        adminRole: body.adminRole
+    })
 
     return { name: user?.name }
 }

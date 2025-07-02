@@ -48,6 +48,9 @@ export const getAllDivision = async ({
         where: {
             title: {
                 contains: search
+            },
+            NOT: {
+                id: 1
             }
         },
         skip: (Number(page) - 1) * Number(perPage),

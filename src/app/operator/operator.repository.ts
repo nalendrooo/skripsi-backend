@@ -1,7 +1,7 @@
 import { ADMIN_ROLE } from "@prisma/client"
 import { IQueryParams } from "../../interface"
 import { prisma } from "../../setup/prisma"
-import { IBodyCreateOperatorModel } from "./operator.model"
+import { IBodyCreateOperatorModel, IBodyUpdateOperatorModel } from "./operator.model"
 // import { IBodyCreateUnitModel } from "./operator.model"
 
 export const getOperatorByEmail = async ({
@@ -15,6 +15,17 @@ export const getOperatorByEmail = async ({
         }
     })
 }
+export const getOperatorById = async ({
+    operatorId: id
+}: {
+    operatorId: number
+}) => {
+    return await prisma.admin.findFirst({
+        where: {
+            id
+        }
+    })
+}
 
 export const createOperator = async ({
     data,
@@ -24,6 +35,25 @@ export const createOperator = async ({
     adminRole: ADMIN_ROLE
 }) => {
     return await prisma.admin.create({
+        data: {
+            ...data,
+            adminRole
+        }
+    })
+}
+export const updateOperator = async ({
+    data,
+    adminRole,
+    operatorId: id
+}: {
+    data: IBodyUpdateOperatorModel,
+    adminRole: ADMIN_ROLE
+    operatorId: number
+}) => {
+    return await prisma.admin.update({
+        where: {
+            id
+        },
         data: {
             ...data,
             adminRole
@@ -49,6 +79,9 @@ export const getAllOperator = async ({
             },
             name: {
                 contains: search
+            },
+            NOT: {
+                divisionId: 1
             }
         },
         select: {
@@ -60,6 +93,7 @@ export const getAllOperator = async ({
             adminRole: true,
             updatedAt: true,
             createdAt: true,
+            divisionId: true,
             division: {
                 select: {
                     title: true
