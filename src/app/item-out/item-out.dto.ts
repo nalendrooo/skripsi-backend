@@ -31,11 +31,13 @@ interface User {
 }
 
 export interface DTOItemOut {
+  id: number;
   admin: Admin;
   amount: number;
   createdAt: Date | null;  // ISO string tanggal
   item: Item;
   news: "TRUE" | "FALSE" | string;  // sesuaikan kalau ada kemungkinan lain
   user: User;
+  code: string
 }
 

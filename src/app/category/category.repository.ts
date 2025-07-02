@@ -50,6 +50,9 @@ export const getAllCategory = async ({
                 contains: search
             }
         },
+        include: {
+            _count: true
+        },
         skip: (Number(page) - 1) * Number(perPage),
         take: Number(perPage),
     })

@@ -5,13 +5,15 @@ import { IQueryParams } from "../../interface";
 
 export const createItemOut = async ({
     data,
+    code,
     adminId
 }: {
     data: IBodyCreateItemOutModel
     adminId: number
+    code: string
 }) => {
     return await prisma.itemOut.create({
-        data: { ...data, adminId }
+        data: { ...data, adminId, code }
     });
 };
 
@@ -23,17 +25,21 @@ export const getAllItemOut = async ({
     const {
         page = 1,
         perPage = 10,
-        search = ''
+        search = '',
+        code = ''
     } = query
 
     return await prisma.itemOut.findMany({
         where: {
             OR: [
                 { user: { name: { contains: search } } },
-                { user: { telephone: { contains: search } } }
-            ]
+                { user: { telephone: { contains: search } } },
+                { code: { startsWith: code } }
+            ],
+            deletedAt: null
         },
         select: {
+            id: true,
             admin: {
                 select: {
                     name: true
@@ -41,6 +47,7 @@ export const getAllItemOut = async ({
             },
             amount: true,
             createdAt: true,
+            code: true,
             item: {
                 select: {
                     brand: true,
@@ -83,6 +90,29 @@ export const getAllItemOut = async ({
         take: Number(perPage),
     })
 }
+
+export const softDeletedItemOut = async ({
+    itemOutId: id
+}: {
+    itemOutId: number
+}) => {
+    return await prisma.itemOut.update({
+        where: {
+            id
+        },
+        data: {
+            deletedAt: new Date()
+        }
+    })
+}
+
+export const getLastDataItemOut = async () => {
+    return await prisma.itemOut.findFirst({
+        orderBy: {
+            createdAt: 'desc'
+        }
+    })
+}
 export const getCountAllItemOut = async ({
     query
 }: {
@@ -99,5 +129,17 @@ export const getCountAllItemOut = async ({
                 { user: { telephone: { contains: search } } }
             ]
         },
+    })
+}
+
+export const getItemOutById = async ({
+    itemOutId: id
+}: {
+    itemOutId: number
+}) => {
+    return await prisma.itemOut.findFirst({
+        where: {
+            id
+        }
     })
 }

@@ -94,7 +94,7 @@ export const createOperator = async ({
             ...body,
             password: hashPassword,
         },
-        adminRole: "OPERATOR"
+        adminRole: body.adminRole
     })
 
 
@@ -223,7 +223,6 @@ export const getAllOperator = async ({
             query
         }),
     ])
-console.log(data)
     const meta = metaPagination(
         Number(page),
         Number(perPage),

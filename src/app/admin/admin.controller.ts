@@ -311,6 +311,23 @@ export const createItemOut = async (
 
     ResponseHandler.created(res, data, `Data berhasil di buat`)
 }
+export const softDeletedItemOut = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { params: { itemOutId } } = req
+    const data = await itemOutService.softDeletedItemOut({
+        itemOutId: Number(itemOutId),
+    })
+
+    if (data instanceof AppError) {
+        next(data)
+        return
+    }
+
+    ResponseHandler.created(res, data, `Data berhasil di buat`)
+}
 
 export const getAllItemOut = async (
     req: Request,

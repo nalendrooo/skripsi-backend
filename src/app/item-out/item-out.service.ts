@@ -38,8 +38,21 @@ export const createItemOut = async ({
         stock: amount
     })
 
+    const last = await itemOutRepository.getLastDataItemOut()
+    let nextNumber = 1;
+
+    if (last && last.code) {
+        const match = last.code.match(/OUT-(\d+)/);
+        if (match && match[1]) {
+            nextNumber = parseInt(match[1], 10) + 1;
+        }
+    }
+
+    const code = 'OUT-' + nextNumber.toString().padStart(6, '0');
+
     return await itemOutRepository.createItemOut({
         data: body,
+        code,
         adminId: token.id
     })
 }
@@ -67,4 +80,28 @@ export const getAllItemOut = async ({
     )
 
     return { data: mapperItemOut(data), meta }
+}
+
+export const softDeletedItemOut = async ({
+    itemOutId
+}: {
+    itemOutId: number
+}) => {
+    const item = await itemOutRepository.getItemOutById({
+        itemOutId
+    })
+
+    if (!item) {
+        return new AppError(ERROR_CODE.NOT_FOUND.code, 'Id barang keluar tidak ditemukan')
+    }
+
+    await itemOutRepository.softDeletedItemOut({
+        itemOutId
+    })
+
+    await itemRepository.stockItemRestock({
+        itemId: item.itemId,
+        stock: item.amount
+    })
+    return { message: 'Data berhasil dihapus' }
 }

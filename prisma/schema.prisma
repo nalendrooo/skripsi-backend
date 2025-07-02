@@ -12,6 +12,7 @@ model Users {
   telephone  String    @unique
   name       String
   code       String?
+  isActive   Boolean   @default(true)
   divisionId Int       @map("division_id")
   division   Division  @relation(fields: [divisionId], references: [id])
   itemOut    ItemOut[]
@@ -27,6 +28,7 @@ model Admin {
   name        String
   email       String
   password    String
+  isActive    Boolean       @default(true)
   adminRole   ADMIN_ROLE    @map("admin_role")
   divisionId  Int           @map("division_id")
   division    Division      @relation(fields: [divisionId], references: [id])
@@ -77,6 +79,7 @@ model Item {
   brand       String?
   location    String?
   supplier    String?
+  isActive    Boolean       @default(true)
   stock       Int
   price       Int           @default(0)
   description String?
@@ -95,6 +98,7 @@ model Item {
 
 model ItemRestock {
   id          Int       @id @default(autoincrement())
+  code        String    @unique
   itemId      Int       @map("item_id")
   item        Item      @relation(fields: [itemId], references: [id])
   amount      Int
@@ -104,12 +108,14 @@ model ItemRestock {
   admin       Admin     @relation(fields: [adminId], references: [id])
   createdAt   DateTime? @default(now()) @map("created_at")
   updatedAt   DateTime? @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
 
   @@map("item_restock")
 }
 
 model ItemOut {
   id        Int       @id @default(autoincrement())
+  code      String    @unique
   itemId    Int       @map("item_id")
   item      Item      @relation(fields: [itemId], references: [id])
   amount    Int
@@ -120,23 +126,26 @@ model ItemOut {
   admin     Admin     @relation(fields: [adminId], references: [id])
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
 
   @@map("item_out")
 }
 
 model ItemBalance {
-  id           Int      @id @default(autoincrement()) @map("id")
-  itemId       Int      @map("item_id")
-  item         Item     @relation(fields: [itemId], references: [id])
-  amount       Int      @map("amount")
-  initialStock Int      @map("initial_stock")
-  finalStock   Int      @map("final_stock")
+  id           Int       @id @default(autoincrement()) @map("id")
+  code         String    @unique
+  itemId       Int       @map("item_id")
+  item         Item      @relation(fields: [itemId], references: [id])
+  amount       Int       @map("amount")
+  initialStock Int       @map("initial_stock")
+  finalStock   Int       @map("final_stock")
   news         NEWS
   description  String?
-  adminId      Int      @map("admin_id")
-  admin        Admin    @relation(fields: [adminId], references: [id])
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  adminId      Int       @map("admin_id")
+  admin        Admin     @relation(fields: [adminId], references: [id])
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
 
   @@map("item_balance")
 }
@@ -148,5 +157,6 @@ enum NEWS {
 
 enum ADMIN_ROLE {
   SUPERADMIN
+  INSPECTOR
   OPERATOR
 }

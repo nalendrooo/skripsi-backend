@@ -40,10 +40,23 @@ export const createItemBalance = async ({
         stock: balance
     })
 
+    const last = await itemBalanceRepository.getLastDataItemBalance()
+    let nextNumber = 1;
+
+    if (last && last.code) {
+        const match = last.code.match(/OPN-(\d+)/);
+        if (match && match[1]) {
+            nextNumber = parseInt(match[1], 10) + 1;
+        }
+    }
+
+    const code = 'OPN-' + nextNumber.toString().padStart(6, '0');
+
     return await itemBalanceRepository.createItemBalance({
         data: { ...body, amount: balance },
         finalStock: body.amount,
         initialStock: cekItem.stock,
+        code,
         adminId: token.id
     })
 }

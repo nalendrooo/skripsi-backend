@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validateRequest } from "../../../middleware/validate-request";
 import { createItemRestockSchema } from "../../item-restock/item-restock.request";
-import { createItemRestock, getAllItemRestock } from "../admin.controller";
+import { createItemRestock, getAllItemRestock, softDeletedItemOut } from "../admin.controller";
 
 const adminItemRestock = Router();
 

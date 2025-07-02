@@ -249,6 +249,7 @@ export const getAllUser = async ({
                     title: true
                 }
             },
+            isActive: true,
             code: true,
             telephone: true,
             _count: {

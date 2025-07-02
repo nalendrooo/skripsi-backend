@@ -34,8 +34,21 @@ export const createItemRestock = async ({
         stock: amount
     })
 
+    const last = await itemRestockRepository.getLastDataItemRestock()
+    let nextNumber = 1;
+
+    if (last && last.code) {
+        const match = last.code.match(/IN-(\d+)/);
+        if (match && match[1]) {
+            nextNumber = parseInt(match[1], 10) + 1;
+        }
+    }
+
+    const code = 'IN-' + nextNumber.toString().padStart(6, '0');
+
     return await itemRestockRepository.createItemRestock({
         data: body,
+        code,
         adminId: token.id
     })
 }

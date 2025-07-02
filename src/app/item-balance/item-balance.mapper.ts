@@ -7,6 +7,7 @@ export const mapperItemBalance = (data: DTOItemOut[]) => {
         createdAt: items.createdAt,
         initialStock: items.initialStock,
         finalStock: items.finalStock,
+        code: items.code,
         description: items.description,
         item: {
             brand: items.item.brand,

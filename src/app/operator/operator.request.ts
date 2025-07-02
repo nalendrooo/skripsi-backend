@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { joiGeneralMessage } from "../../utils/joi";
+import { ADMIN_ROLE } from "@prisma/client";
 
 export const createAdminSchema = Joi.object({
   telephone: Joi.string()
@@ -8,7 +9,7 @@ export const createAdminSchema = Joi.object({
     .max(15)
     .required()
     .messages(joiGeneralMessage),
-
+  adminRole: Joi.valid('INSPECTOR', 'OPERATOR', 'SUPERADMIN').required().messages(joiGeneralMessage),
   name: Joi.string()
     .max(50)
     .pattern(/^[A-Za-z\s]+$/)

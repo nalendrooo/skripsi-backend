@@ -44,13 +44,16 @@ export const getAllOperator = async ({
 
     return await prisma.admin.findMany({
         where: {
-            adminRole: ADMIN_ROLE.OPERATOR,
+            adminRole: {
+                not: ADMIN_ROLE.SUPERADMIN
+            },
             name: {
                 contains: search
             }
         },
         select: {
             id: true,
+            isActive: true,
             name: true,
             email: true,
             telephone: true,

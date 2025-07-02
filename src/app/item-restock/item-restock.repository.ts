@@ -4,15 +4,25 @@ import { IBodyCreateItemRestockModel } from "./item-restock.model";
 
 export const createItemRestock = async ({
     data,
-    adminId
+    adminId,
+    code
 }: {
     data: IBodyCreateItemRestockModel
     adminId: number
+    code: string
 }) => {
     return await prisma.itemRestock.create({
-        data: { ...data, adminId }
+        data: { ...data, adminId, code }
     });
 };
+
+export const getLastDataItemRestock = async () => {
+    return await prisma.itemRestock.findFirst({
+        orderBy: {
+            createdAt: 'desc'
+        }
+    })
+}
 
 export const getAllItemRestock = async ({
     query
@@ -22,12 +32,14 @@ export const getAllItemRestock = async ({
     const {
         page = 1,
         perPage = 10,
-        search = ''
+        search = '',
+        code = ''
     } = query
     return await prisma.itemRestock.findMany({
         where: {
             OR: [
                 { item: { title: { contains: search } } },
+                { code: { startsWith: code } }
             ]
         },
         select: {
@@ -40,6 +52,7 @@ export const getAllItemRestock = async ({
             createdAt: true,
             description: true,
             news: true,
+            code: true,
             item: {
                 select: {
                     brand: true,

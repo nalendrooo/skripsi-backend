@@ -6,6 +6,7 @@ export interface DTOItemRestock {
     createdAt: Date | null
     description?: string | null
     news: string;
+    code: string
     item: {
         brand: string | null
         category: {

@@ -93,6 +93,7 @@ export interface IQueryParams {
     perPage?: string
     sort?: string
     search?: string
+    code?: string
 
     slug?: string
     free?: string

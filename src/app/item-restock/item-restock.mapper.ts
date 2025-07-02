@@ -7,6 +7,7 @@ export const mapperItemRestock = (data: DTOItemRestock[]) => {
         createdAt: item.createdAt,
         description: item.description,
         news: item.news === "TRUE",
+        code: item.code,
         item: {
             brand: item.item.brand,
             category: item.item.category.title,

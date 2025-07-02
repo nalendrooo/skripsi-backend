@@ -46,6 +46,9 @@ export const getAllUnit = async ({
                 contains: search
             }
         },
+        include: {
+            _count: true
+        },
         skip: (Number(page) - 1) * Number(perPage),
         take: Number(perPage),
     })

@@ -244,7 +244,7 @@ export const createUser = async ({
     })
 
     if (cekUser) {
-        return new AppError(ERROR_CODE.BAD_REQUEST.code, 'User sudah terdaftar')
+        return new AppError(ERROR_CODE.BAD_REQUEST.code, 'Nomor telephone sudah terdaftar')
     }
 
     return await userRepository.createUser({

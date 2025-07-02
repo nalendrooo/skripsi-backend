@@ -6,12 +6,14 @@ export const createItemBalance = async ({
     data,
     adminId,
     initialStock,
-    finalStock
+    finalStock,
+    code
 }: {
     data: IBodyCreateItemBalanceModel,
     finalStock: number
     initialStock: number
     adminId: number
+    code: string
 }) => {
     return await prisma.itemBalance.create({
         data: {
@@ -19,6 +21,7 @@ export const createItemBalance = async ({
             finalStock,
             initialStock,
             adminId,
+            code
         }
     });
 };
@@ -31,10 +34,17 @@ export const getAllItemBalance = async ({
     const {
         page = 1,
         perPage = 10,
-        search = ''
+        search = '',
+        code = ''
     } = query
 
     return await prisma.itemBalance.findMany({
+        where: {
+            OR: [
+                { item: { title: { contains: search } } },
+                { code: { startsWith: code } }
+            ]
+        },
         select: {
             admin: {
                 select: {
@@ -46,6 +56,7 @@ export const getAllItemBalance = async ({
             initialStock: true,
             amount: true,
             createdAt: true,
+            code: true,
             item: {
                 select: {
                     brand: true,
@@ -67,13 +78,21 @@ export const getAllItemBalance = async ({
                 }
             },
             news: true,
-            
+
         },
         orderBy: {
             createdAt: 'desc'
         },
         skip: (Number(page) - 1) * Number(perPage),
         take: Number(perPage),
+    })
+}
+
+export const getLastDataItemBalance = async () => {
+    return await prisma.itemBalance.findFirst({
+        orderBy: {
+            createdAt: 'desc'
+        },
     })
 }
 export const getCountAllItemBalance = async ({

@@ -38,6 +38,7 @@ export interface DTOItemOut {
   description: string | null;
   createdAt: Date | null;  // ISO string tanggal
   item: Item;
+  code: string;
   news: "TRUE" | "FALSE" | string;  // sesuaikan kalau ada kemungkinan lain
 }
 
