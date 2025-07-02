@@ -43,9 +43,11 @@ export const getAllItemBalance = async ({
             OR: [
                 { item: { title: { contains: search } } },
                 { code: { startsWith: code } }
-            ]
+            ],
+            deletedAt: null
         },
         select: {
+            id: true,
             admin: {
                 select: {
                     name: true
@@ -105,4 +107,31 @@ export const getCountAllItemBalance = async ({
     } = query
 
     return await prisma.itemBalance.count()
+}
+
+export const getItemBalanceById = async ({
+    itemBalanceId: id
+}: {
+    itemBalanceId: number
+}) => {
+    return await prisma.itemBalance.findFirst({
+        where: {
+            id
+        }
+    })
+}
+
+export const softDeletedItemBalance = async ({
+    itemBalanceId: id
+}: {
+    itemBalanceId: number
+}) => {
+    return await prisma.itemOut.update({
+        where: {
+            id
+        },
+        data: {
+            deletedAt: new Date()
+        }
+    })
 }

@@ -421,3 +421,21 @@ export const getAllItemBalance = async (
 
     ResponseHandler.ok(res, data, `Data berhasil di ambil`)
 }
+
+export const softDeletedItemBalance = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { params: { itemBalanceId } } = req
+    const data = await itemBalanceService.softDeletedItemBalance({
+        itemBalanceId: Number(itemBalanceId),
+    })
+
+    if (data instanceof AppError) {
+        next(data)
+        return
+    }
+
+    ResponseHandler.created(res, data, `Data berhasil di dihapus`)
+}

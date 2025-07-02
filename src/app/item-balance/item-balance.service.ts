@@ -85,3 +85,28 @@ export const getAllItemBalance = async ({
 
     return { data: mapperItemBalance(data), meta }
 }
+
+
+export const softDeletedItemBalance = async ({
+    itemBalanceId
+}: {
+    itemBalanceId: number
+}) => {
+    const item = await itemBalanceRepository.getItemBalanceById({
+        itemBalanceId
+    })
+
+    if (!item) {
+        return new AppError(ERROR_CODE.NOT_FOUND.code, 'Id stok balance tidak ditemukan')
+    }
+
+    await itemBalanceRepository.softDeletedItemBalance({
+        itemBalanceId
+    })
+
+    await itemRepository.stockItemRestock({
+        itemId: item.itemId,
+        stock: item.amount
+    })
+    return { message: 'Data berhasil dihapus' }
+}
