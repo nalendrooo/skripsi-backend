@@ -6,6 +6,8 @@ import { AppError } from "../../middleware/error-handler";
 import { ERROR_CODE, IQueryParams } from "../../interface";
 import { metaPagination } from "../../utils/meta-pagination";
 import { mapperItemOut } from "./item-out.mapper";
+import ExcelJS from 'exceljs'
+import { Response } from "express";
 
 export const createItemOut = async ({
     body,
@@ -104,4 +106,82 @@ export const softDeletedItemOut = async ({
         stock: item.amount
     })
     return { message: 'Data berhasil dihapus' }
+}
+
+export const getDownloadListItemOut = async ({
+    query,
+    res
+}: {
+    query: IQueryParams,
+    res: Response
+}) => {
+    try {
+
+        const barangKeluar = await itemOutRepository.getAllItemOut({
+            query
+        })
+
+        // Buat workbook dan worksheet baru
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('List Barang Masuk');
+
+        worksheet.columns = [
+            { header: 'No', key: 'no', width: 5 },
+            { header: 'Kode Barang Keluar', key: 'kodeKeluar', width: 20 },
+            { header: 'Pengambil', key: 'pengambil', width: 25 },
+            { header: 'Divisi', key: 'divisi', width: 20 },
+            { header: 'Telepon', key: 'telepon', width: 18 },
+            { header: 'Nama Barang', key: 'namaBarang', width: 30 },
+            { header: 'Jumlah', key: 'jumlah', width: 10 },
+            { header: 'Kode Barang', key: 'kodeBarang', width: 20 },
+            { header: 'Kategori', key: 'kategori', width: 20 },
+            { header: 'Berita Acara', key: 'berita', width: 30 },
+            { header: 'Petugas', key: 'petugas', width: 25 },
+            { header: 'Dibuat', key: 'dibuat', width: 25 },
+        ];
+
+
+        barangKeluar.forEach((brg, index) => {
+            const row = worksheet.addRow({
+                no: index + 1,
+                kodeKeluar: brg.code || '',
+                pengambil: brg.user?.name || '',
+                divisi: brg.user?.division?.title || '',
+                telepon: brg.user?.telephone || '',
+                namaBarang: brg.item?.title || '',
+                jumlah: brg.amount ?? 0,
+                kodeBarang: brg.item?.code || '',
+                kategori: brg.item?.category?.title || '',
+                berita: brg.news || '',
+                petugas: brg.admin?.name || '',
+                dibuat: new Date(brg.createdAt || '').toLocaleDateString('id-ID')
+            });
+
+            row.eachCell({ includeEmpty: true }, (cell) => {
+                cell.alignment = { horizontal: 'left' };
+            });
+        });
+
+
+        worksheet.getRow(1).eachCell((cell) => {
+            cell.alignment = { horizontal: 'left' };
+        });
+
+        res.setHeader(
+            'Content-Type',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        );
+        res.setHeader(
+            'Content-Disposition',
+            'attachment; filename=' + `List-Barang-Keluar-(${new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' }).format(new Date())}).xlsx`
+        );
+
+        await workbook.xlsx.write(res);
+
+
+        res.end();
+    } catch (error) {
+        console.error('Error generating Excel file', error);
+        res.status(500).send('Error generating Excel file');
+    }
 }

@@ -197,6 +197,8 @@ export const getAllUnit = async (
 }
 
 //ITEM
+
+
 export const createItem = async (
     req: Request,
     res: Response,
@@ -494,4 +496,41 @@ export const softDeletedItemBalance = async (
     }
 
     ResponseHandler.created(res, data, `Data berhasil di dihapus`)
+}
+
+export const getDownloadListItem = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { query } = req
+    await itemService.getDownloadListItem({ res, query })
+
+}
+export const getDownloadListItemBalance = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { query } = req
+    await itemBalanceService.getDownloadListItemBalance({ res, query })
+
+}
+export const getDownloadListItemOut = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { query } = req
+    await itemOutService.getDownloadListItemOut({ res, query })
+
+}
+export const getDownloadListItemRestock = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { query } = req
+    await itemRestockService.getDownloadListItemRestock({ res, query })
+
 }

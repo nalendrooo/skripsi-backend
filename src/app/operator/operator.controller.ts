@@ -52,3 +52,26 @@ export const loginOperator = async (
         })
         .json({ status: 'success', message: 'Anda berhasil login', data, })
 }
+
+export const logoutOperator = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    // Hapus cookie token dengan menyetel ulang nilainya dan waktu kadaluarsa
+    res.clearCookie('token', {
+      path: '/',
+      httpOnly: false,
+      secure: false,
+      sameSite: 'lax',
+    })
+
+    return res.status(200).json({
+      status: 'success',
+      message: 'Anda berhasil logout',
+    })
+  } catch (error) {
+    next(error)
+  }
+}

@@ -9,6 +9,7 @@ import itemBalanceRouter from "./router/item-balance";
 import itemRestockRouter from "./router/item-restock";
 import userRouter from "./router/user";
 import operatorRouter from "./router/operator";
+import { getDownloadListItem } from "./admin.controller";
 
 const route = Router()
 

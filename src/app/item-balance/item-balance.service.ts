@@ -6,6 +6,8 @@ import * as itemBalanceRepository from "./item-balance.repository"
 import { IBodyCreateItemBalanceModel } from "../item-balance/item-balance.model"
 import { metaPagination } from "../../utils/meta-pagination"
 import { mapperItemBalance } from "./item-balance.mapper"
+import ExcelJS from 'exceljs'
+import { Response } from "express"
 
 export const createItemBalance = async ({
     body,
@@ -109,4 +111,92 @@ export const softDeletedItemBalance = async ({
         stock: item.amount
     })
     return { message: 'Data berhasil dihapus' }
+}
+
+export const getDownloadListItemBalance = async ({
+    query,
+    res
+}: {
+    query: IQueryParams,
+    res: Response
+}) => {
+    try {
+
+        const barangOpname = await itemBalanceRepository.getAllItemBalance({
+            query
+        })
+
+        // Buat workbook dan worksheet baru
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('List Barang Masuk');
+
+        worksheet.columns = [
+            { header: 'No', key: 'no', width: 5 },
+            { header: 'Petugas', key: 'petugas', width: 25 },
+            { header: 'Nama Barang', key: 'namaBarang', width: 30 },
+            { header: 'Stok Sistem', key: 'stokSistem', width: 15 },
+            { header: 'Stok Fisik', key: 'stokFisik', width: 15 },
+            { header: 'Selisih', key: 'selisih', width: 10 },
+            { header: 'Kode Barang', key: 'kodeBarang', width: 20 },
+            { header: 'Kategori', key: 'kategori', width: 20 },
+            { header: 'Lokasi', key: 'lokasi', width: 20 },
+            { header: 'Supplier', key: 'supplier', width: 25 },
+            { header: 'Merek', key: 'merek', width: 20 },
+            { header: 'Berita Acara', key: 'berita', width: 30 },
+            { header: 'Deskripsi', key: 'deskripsi', width: 30 },
+            { header: 'Dibuat', key: 'dibuat', width: 25 },
+        ];
+
+
+
+        barangOpname.forEach((brg, index) => {
+            const stokSistem = brg.initialStock ?? 0;
+            const stokFisik = brg.finalStock ?? 0;
+            const selisih = stokFisik - stokSistem;
+
+            const row = worksheet.addRow({
+                no: index + 1,
+                petugas: brg.admin?.name || '',
+                namaBarang: brg.item?.title || '',
+                stokSistem: stokSistem,
+                stokFisik: stokFisik,
+                selisih: selisih,
+                kodeBarang: brg.item?.code || '',
+                kategori: brg.item?.category?.title || '',
+                lokasi: brg.item?.location || '',
+                supplier: brg.item?.supplier || '',
+                merek: brg.item?.brand || '',
+                berita: brg.news || '',
+                deskripsi: brg.description || '',
+                dibuat: new Date(brg.createdAt || '').toLocaleDateString('id-ID')
+            });
+
+            row.eachCell({ includeEmpty: true }, (cell) => {
+                cell.alignment = { horizontal: 'left' };
+            });
+        });
+
+
+
+        worksheet.getRow(1).eachCell((cell) => {
+            cell.alignment = { horizontal: 'left' };
+        });
+
+        res.setHeader(
+            'Content-Type',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        );
+        res.setHeader(
+            'Content-Disposition',
+            'attachment; filename=' + `List-Barang-Keluar-(${new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' }).format(new Date())}).xlsx`
+        );
+
+        await workbook.xlsx.write(res);
+
+
+        res.end();
+    } catch (error) {
+        console.error('Error generating Excel file', error);
+        res.status(500).send('Error generating Excel file');
+    }
 }
