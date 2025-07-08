@@ -311,3 +311,33 @@ export const getCountAllUser = async ({
     })
 }
 
+export const getTopUser = async () => {
+    return await prisma.users.findMany({
+        where: {
+            createdAt: {
+                gte: new Date(new Date().setDate(new Date().getDate() - 30))
+            }
+        },
+        select: {
+            name: true,
+            telephone: true,
+            division: {
+                select: {
+                    title: true
+                }
+            },
+            _count: {
+                select: {
+                    itemOut: true
+                }
+            }
+        },
+        orderBy: {
+            itemOut: {
+                _count: 'desc'
+            }
+        },
+        take: 5
+    })
+}
+

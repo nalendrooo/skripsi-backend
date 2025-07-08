@@ -9,7 +9,7 @@ import itemBalanceRouter from "./router/item-balance";
 import itemRestockRouter from "./router/item-restock";
 import userRouter from "./router/user";
 import operatorRouter from "./router/operator";
-import { getDownloadListItem } from "./admin.controller";
+import dashboardRouter from "./router/dashboard";
 
 const route = Router()
 
@@ -17,6 +17,7 @@ route.use('/category', categoryRouter)
 route.use('/division', divisionRouter)
 route.use('/unit', unitRouter)
 route.use('/item', itemRouter)
+route.use('/dashboard', dashboardRouter)
 route.use('/item-out', itemOutRouter)
 route.use('/item-balance', itemBalanceRouter)
 route.use('/item-restock', itemRestockRouter)

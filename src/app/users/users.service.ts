@@ -13,6 +13,7 @@ import { metaPagination } from '../../utils/meta-pagination';
 import { mapperUsers } from './users.mapper';
 import { IBodyCreateUserModel } from './users.model';
 import { AppError } from '../../middleware/error-handler';
+import * as itemOutRepository from '../item-out/item-out.repository'
 
 // dotenv.config()
 
@@ -289,4 +290,13 @@ export const updateUser = async ({
         userId,
         data: body
     })
+}
+
+export const getTopUser = async () => {
+    const item = await itemOutRepository.getCountAllItemOutInMount()
+    const user =await userRepository.getTopUser()
+    return {
+        item,
+        user
+    }
 }

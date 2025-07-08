@@ -3,11 +3,11 @@ import { validateRequest } from "../../../middleware/validate-request";
 import { createCategory, getAllCategory, updateCategory } from "../admin.controller";
 import { createCategorySchema } from "../../category/category.request";
 
-const adminCategoryRouter = Router();
+const router = Router();
 
-adminCategoryRouter.get('/', getAllCategory);
-adminCategoryRouter.post('/', validateRequest(createCategorySchema), createCategory);
-adminCategoryRouter.patch('/:categoryId', validateRequest(createCategorySchema), updateCategory);
+router.get('/', getAllCategory);
+router.post('/', validateRequest(createCategorySchema), createCategory);
+router.patch('/:categoryId', validateRequest(createCategorySchema), updateCategory);
 
-export default adminCategoryRouter
+export default router
 

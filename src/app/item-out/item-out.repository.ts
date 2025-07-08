@@ -131,6 +131,15 @@ export const getCountAllItemOut = async ({
         },
     })
 }
+export const getCountAllItemOutInMount = async () => {
+    return await prisma.itemOut.count({
+        where: {
+            createdAt: {
+                gte: new Date(new Date().setDate(new Date().getDate() - 30))
+            }
+        }
+    })
+}
 
 export const getItemOutById = async ({
     itemOutId: id

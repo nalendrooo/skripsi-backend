@@ -13,6 +13,7 @@ import * as userService from '../users/users.service'
 import * as operatorService from '../operator/operator.service'
 import { AppError } from '../../middleware/error-handler'
 import { ResponseHandler } from '../../utils/response-handler'
+import * as adminService from './admin.service'
 // import * as courseService from '../course/course.service'
 // import * as materialContentLearningService from '../material-content-learning/material-content-learning.service'
 // import * as materialContentService from '../material-content/material-content.service'
@@ -310,6 +311,22 @@ export const updateUser = async (
     ResponseHandler.ok(res, data, `Data berhasil diupdate`)
 }
 
+export const getTopUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { query } = req
+    const data = await userService.getTopUser()
+
+    if (data instanceof AppError) {
+        next(data)
+        return
+    }
+
+    ResponseHandler.ok(res, data, `Data berhasil di ambil`)
+}
+
 
 //OPERATOR
 export const createOperator = async (
@@ -533,4 +550,37 @@ export const getDownloadListItemRestock = async (
     const { query } = req
     await itemRestockService.getDownloadListItemRestock({ res, query })
 
+}
+
+export const getDashboard = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { query } = req
+    const data = await adminService.getDashboard({
+        query
+    })
+
+    if (data instanceof AppError) {
+        next(data)
+        return
+    }
+
+    ResponseHandler.ok(res, data, `Data berhasil di ambil`)
+}
+export const getCart = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { query } = req
+    const data = await adminService.getCart()
+
+    if (data instanceof AppError) {
+        next(data)
+        return
+    }
+
+    ResponseHandler.ok(res, data, `Data berhasil di ambil`)
 }

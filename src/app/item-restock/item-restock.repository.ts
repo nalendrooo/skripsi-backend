@@ -100,3 +100,13 @@ export const getCountAllItemRestock = async ({
         },
     });
 };
+
+export const getCountAllItemRestockInMount = async () => {
+    return await prisma.itemRestock.count({
+        where: {
+            createdAt: {
+                gte: new Date(new Date().setDate(new Date().getDate() - 30))
+            }
+        }
+    })
+}
