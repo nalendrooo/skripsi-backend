@@ -2,6 +2,7 @@ import { DTOItemOut } from "./item-balance.dto";
 
 export const mapperItemBalance = (data: DTOItemOut[]) => {
     return data.map((items) => ({
+        id: items.id,
         operator: items.admin.name,
         amount: items.amount,
         createdAt: items.createdAt,

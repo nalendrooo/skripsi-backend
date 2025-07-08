@@ -31,6 +31,7 @@ interface User {
 }
 
 export interface DTOItemOut {
+  id: number;
   admin: Admin;
   amount: number;
   initialStock: number;
