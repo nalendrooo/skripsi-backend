@@ -126,7 +126,7 @@ export const softDeletedItemBalance = async ({
 }: {
     itemBalanceId: number
 }) => {
-    return await prisma.itemOut.update({
+    return await prisma.itemBalance.update({
         where: {
             id
         },
