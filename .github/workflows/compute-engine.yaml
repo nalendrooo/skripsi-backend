@@ -34,8 +34,7 @@ jobs:
 
 
             cd skripsi/be
-            git restore package-lock.json
-            git restore package.json
+            git reset --hard
             git pull origin master
             npm install
 
