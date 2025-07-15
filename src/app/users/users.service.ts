@@ -224,6 +224,31 @@ export const getAllUser = async ({
     return { data: mapperUsers(data), meta }
 }
 
+export const updateIsActive = async ({
+    body,
+    userId
+}: {
+    body: {
+        isActive: boolean
+    },
+    userId: number
+}) => {
+    const { isActive } = body
+
+    const user = await userRepository.getUserById({
+        userId
+    })
+
+    if (!user) {
+        return new AppError(ERROR_CODE.NOT_FOUND.code, 'User tidak ditemukan')
+    }
+
+    return await userRepository.updateIsActive({
+        isActive,
+        userId
+    })
+}
+
 export const createUser = async ({
     body
 }: {

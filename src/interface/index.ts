@@ -94,6 +94,7 @@ export interface IQueryParams {
     sort?: string
     search?: string
     code?: string
+    active?: string
 
     slug?: string
     free?: string

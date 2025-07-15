@@ -94,3 +94,5 @@ export const getAllUser = async (
     ResponseHandler.ok(res, data, `Data berhasil di ambil`)
 }
 
+
+

@@ -1,14 +1,15 @@
 import { Router } from "express";
 import { validateRequest } from "../../../middleware/validate-request";
 import { createItemSchema } from "../../item/item.request";
-import { createItem, getAllItem, getDownloadListItem, updateItem } from "../admin.controller";
+import { createItem, getAllItem, getDownloadListItem, updateIsActiveItem, updateItem } from "../admin.controller";
+import { updateIsActiveUserSchema } from "../../users/users.request";
 
-const adminItemRouter = Router();
+const router = Router();
 
-adminItemRouter.get('/', getAllItem);
-// adminItemRouter.get('/download-excel', getDownloadListItem);
-adminItemRouter.post('/', validateRequest(createItemSchema), createItem);
-adminItemRouter.put('/:itemId', validateRequest(createItemSchema), updateItem);
+router.get('/', getAllItem);
+router.post('/', validateRequest(createItemSchema), createItem);
+router.put('/:itemId', validateRequest(createItemSchema), updateItem);
+router.patch('/:itemId/status', validateRequest(updateIsActiveUserSchema), updateIsActiveItem);
 
-export default adminItemRouter
+export default router
 

@@ -40,7 +40,7 @@ export const getAllCategory = async ({
 }) => {
     const {
         page = 1,
-        perPage = 10,
+        perPage = 99,
         search
     } = query
 

@@ -36,15 +36,19 @@ export const getAllItem = async ({
 }) => {
     const {
         page = 1,
-        perPage = 10,
-        search
+        perPage = 99,
+        search,
+        active
     } = query
 
     return await prisma.item.findMany({
         where: {
             title: {
                 contains: search
-            }
+            },
+            ...(typeof active !== 'undefined' && active !== ''
+                ? { isActive: active === 'true' }
+                : {}), // hanya tambahkan filter isActive jika active ada
         },
         include: {
             category: {
@@ -80,6 +84,21 @@ export const getCountAllItem = async ({
         },
     })
 }
+
+export const updateIsActive = async ({
+    isActive,
+    itemId: id
+}: {
+    isActive: boolean
+    itemId: number
+}) => await prisma.item.update({
+    where: {
+        id
+    },
+    data: {
+        isActive
+    }
+})
 
 export const createItem = async ({
     data,

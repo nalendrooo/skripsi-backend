@@ -56,3 +56,8 @@ export const createUserSchema = Joi.object({
     .required()
     .messages(joiGeneralMessage),
 });
+export const updateIsActiveUserSchema = Joi.object({
+  isActive: Joi.boolean()
+    .required()
+    .messages(joiGeneralMessage),
+});

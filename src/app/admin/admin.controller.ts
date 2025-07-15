@@ -199,6 +199,24 @@ export const getAllUnit = async (
 
 //ITEM
 
+export const updateIsActiveItem = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { body, params: { itemId }  } = req
+    const data = await itemService.updateIsActive({
+        body,
+        itemId: Number(itemId)
+    })
+
+    if (data instanceof AppError) {
+        next(data)
+        return
+    }
+
+    ResponseHandler.ok(res, data, `Data berhasil di update`)
+}
 
 export const createItem = async (
     req: Request,
@@ -275,6 +293,25 @@ export const getAllUser = async (
     ResponseHandler.ok(res, data, `Data berhasil di ambil`)
 }
 
+export const updateIsActiveUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { body, params: { userId }  } = req
+    const data = await userService.updateIsActive({
+        body,
+        userId: Number(userId)
+    })
+
+    if (data instanceof AppError) {
+        next(data)
+        return
+    }
+
+    ResponseHandler.ok(res, data, `Data berhasil di update`)
+}
+
 export const createUser = async (
     req: Request,
     res: Response,
@@ -347,6 +384,26 @@ export const createOperator = async (
 
     ResponseHandler.created(res, data, `Data berhasil dibuat`)
 }
+
+export const updateIsActiveOperator = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    const { body, params: { operatorId }  } = req
+    const data = await operatorService.updateIsActive({
+        body,
+        operatorId: Number(operatorId)
+    })
+
+    if (data instanceof AppError) {
+        next(data)
+        return
+    }
+
+    ResponseHandler.ok(res, data, `Data berhasil di update`)
+}
+
 export const updateOperator = async (
     req: Request,
     res: Response,

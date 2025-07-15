@@ -61,6 +61,22 @@ export const updateOperator = async ({
     })
 }
 
+export const updateIsActive = async ({
+    isActive,
+    operatorId: id
+}: {
+    isActive: boolean
+    operatorId: number
+}) => await prisma.admin.update({
+    where: {
+        id
+    },
+    data: {
+        isActive
+    }
+})
+
+
 export const getAllOperator = async ({
     query
 }: {
@@ -68,7 +84,8 @@ export const getAllOperator = async ({
 }) => {
     const {
         page = 1,
-        perPage = 10,
+        perPage = 99,
+        active,
         search = ''
     } = query
 
@@ -80,6 +97,9 @@ export const getAllOperator = async ({
             name: {
                 contains: search
             },
+            ...(typeof active !== 'undefined' && active !== ''
+                ? { isActive: active === 'true' }
+                : {}), // hanya tambahkan filter isActive jika active ada
             NOT: {
                 divisionId: 1
             }
@@ -157,7 +177,7 @@ export const getCountAllOperator = async ({
 // }) => {
 //     const {
 //         page = 1,
-//         perPage = 10,
+//         perPage = 99,
 //         search
 //     } = query
 

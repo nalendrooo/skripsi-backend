@@ -169,3 +169,28 @@ export const getDownloadListItem = async ({
         res.status(500).send('Error generating Excel file');
     }
 }
+
+export const updateIsActive = async ({
+    body,
+    itemId
+}: {
+    body: {
+        isActive: boolean
+    },
+    itemId: number
+}) => {
+    const { isActive } = body
+
+    const item = await itemRepository.getItemById({
+        itemId
+    })
+
+    if (!item) {
+        return new AppError(ERROR_CODE.NOT_FOUND.code, 'Barang tidak ditemukan')
+    }
+
+    return await itemRepository.updateIsActive({
+        isActive,
+        itemId
+    })
+}

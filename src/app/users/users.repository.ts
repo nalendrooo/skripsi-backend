@@ -222,6 +222,21 @@ export const updateUser = async ({
     })
 }
 
+export const updateIsActive = async ({
+    isActive,
+    userId: id
+}: {
+    isActive: boolean
+    userId: number
+}) => await prisma.users.update({
+    where: {
+        id
+    },
+    data: {
+        isActive
+    }
+})
+
 export const getUserByTelephone = async ({
     telephone
 }: {
@@ -239,7 +254,8 @@ export const getAllUser = async ({
 }) => {
     const {
         page = 1,
-        perPage = 10,
+        perPage = 99,
+        active,
         search = '',
     } = query
 
@@ -259,7 +275,10 @@ export const getAllUser = async ({
             ],
             NOT: {
                 divisionId: 1
-            }
+            },
+            ...(typeof active !== 'undefined' && active !== ''
+                ? { isActive: active === 'true' }
+                : {}) // hanya tambahkan filter isActive jika active ada
         },
         select: {
             id: true,

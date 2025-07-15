@@ -1,15 +1,16 @@
 import { Router } from "express";
 import { validateRequest } from "../../../middleware/validate-request";
 import { createAdminSchema, updateAdminSchema } from "../../operator/operator.request";
-import { createOperator, updateOperator } from "../admin.controller";
+import { createOperator, updateIsActiveOperator, updateOperator } from "../admin.controller";
 import { getAllOperator } from "../../operator/operator.controller";
+import { updateIsActiveUserSchema } from "../../users/users.request";
 
-const adminOperator = Router();
+const router = Router();
 
-adminOperator.get('/', getAllOperator);
-adminOperator.post('/', validateRequest(createAdminSchema), createOperator);
-adminOperator.put('/:operatorId', validateRequest(updateAdminSchema), updateOperator);
-// adminOperator.post('/login', validateRequest(loginAdminSchema), loginOperator);
+router.get('/', getAllOperator);
+router.post('/', validateRequest(createAdminSchema), createOperator);
+router.put('/:operatorId', validateRequest(updateAdminSchema), updateOperator);
+router.patch('/:operatorId/status', validateRequest(updateIsActiveUserSchema), updateIsActiveOperator);
 
-export default adminOperator
+export default router
 

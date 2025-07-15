@@ -33,7 +33,7 @@ export const getAllItemBalance = async ({
 }) => {
     const {
         page = 1,
-        perPage = 10,
+        perPage = 99,
         search = '',
         code = ''
     } = query

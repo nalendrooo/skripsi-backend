@@ -148,6 +148,13 @@ export const loginOperator = async ({
         )
     }
 
+    if (user.isActive === false) {
+        return new AppError(
+            ERROR_CODE.UNAUTHORIZED.code,
+            'User tidak aktif, silakan hubungi administrator',
+        )
+    }
+
     const match = await bcrypt.compare(password, user.password)
 
     if (!match) {
@@ -232,6 +239,31 @@ export const loginOperator = async ({
     //     };
     // }
 
+}
+
+export const updateIsActive = async ({
+    body,
+    operatorId
+}: {
+    body: {
+        isActive: boolean
+    },
+    operatorId: number
+}) => {
+    const { isActive } = body
+
+    const user = await operatorRepository.getOperatorById({
+        operatorId
+    })
+
+    if (!user) {
+        return new AppError(ERROR_CODE.NOT_FOUND.code, 'Operator tidak ditemukan')
+    }
+
+    return await operatorRepository.updateIsActive({
+        isActive,
+        operatorId
+    })
 }
 
 export const getAllOperator = async ({

@@ -31,7 +31,7 @@ export const getAllItemRestock = async ({
 }) => {
     const {
         page = 1,
-        perPage = 10,
+        perPage = 99,
         search = '',
         code = ''
     } = query
@@ -88,7 +88,7 @@ export const getCountAllItemRestock = async ({
 }) => {
     const {
         page = 1,
-        perPage = 10,
+        perPage = 99,
         search = ''
     } = query
 
