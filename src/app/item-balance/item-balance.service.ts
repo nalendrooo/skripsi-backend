@@ -128,10 +128,11 @@ export const getDownloadListItemBalance = async ({
 
         // Buat workbook dan worksheet baru
         const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('List Barang Masuk');
+        const worksheet = workbook.addWorksheet('List Data Opname');
 
         worksheet.columns = [
             { header: 'No', key: 'no', width: 5 },
+            { header: 'Kode Opname', key: 'code', width: 20 },
             { header: 'Petugas', key: 'petugas', width: 25 },
             { header: 'Nama Barang', key: 'namaBarang', width: 30 },
             { header: 'Stok Sistem', key: 'stokSistem', width: 15 },
@@ -156,6 +157,7 @@ export const getDownloadListItemBalance = async ({
 
             const row = worksheet.addRow({
                 no: index + 1,
+                code: brg.code || '',
                 petugas: brg.admin?.name || '',
                 namaBarang: brg.item?.title || '',
                 stokSistem: stokSistem,
@@ -188,7 +190,7 @@ export const getDownloadListItemBalance = async ({
         );
         res.setHeader(
             'Content-Disposition',
-            'attachment; filename=' + `List-Barang-Keluar-(${new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' }).format(new Date())}).xlsx`
+            'attachment; filename=' + `List-Data-Opname(${new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' }).format(new Date())}).xlsx`
         );
 
         await workbook.xlsx.write(res);
