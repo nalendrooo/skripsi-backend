@@ -18,7 +18,7 @@ ARG ACCESS_TOKEN
 
 # Mengatur variabel lingkungan dengan mendukung override dari environment
 ENV DATABASE_URL=${DATABASE_URL}
-ENV VITE_STORAGE_URL=${VITE_STORAGE_URL}
+ENV ACCESS_TOKEN=${ACCESS_TOKEN}
 
 # Build app (jika menggunakan Next.js/Nuxt/tsc/dll)
 RUN npx prisma generate
