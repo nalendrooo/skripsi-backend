@@ -14,10 +14,10 @@ RUN npm install
 COPY . .
 
 # Build app (jika menggunakan Next.js/Nuxt/tsc/dll)
+RUN npx prisma generate
 RUN npm run build
 
 # Generate Prisma Client
-RUN npx prisma generate
 
 # Expose port yang digunakan aplikasi
 EXPOSE 8000
