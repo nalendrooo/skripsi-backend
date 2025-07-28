@@ -8,49 +8,49 @@ import * as operatorService from '../operator/operator.service'
 import { NextFunction, Request, Response } from "express"
 
 export const getAllOperator = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
+  req: Request,
+  res: Response,
+  next: NextFunction,
 ) => {
-    const { query } = req
-    const data = await operatorService.getAllOperator({
-        query
-    })
+  const { query } = req
+  const data = await operatorService.getAllOperator({
+    query
+  })
 
-    if (data instanceof AppError) {
-        next(data)
-        return
-    }
+  if (data instanceof AppError) {
+    next(data)
+    return
+  }
 
-    ResponseHandler.ok(res, data, `Data berhasil di ambil`)
+  ResponseHandler.ok(res, data, `Data berhasil di ambil`)
 }
 
 export const loginOperator = async (
-    req: Request,
-    res: Response,
-    next: NextFunction,
+  req: Request,
+  res: Response,
+  next: NextFunction,
 ) => {
-    const { body } = req
+  const { body } = req
 
-    const data = await operatorService.loginOperator({
-        body
+  const data = await operatorService.loginOperator({
+    body
+  })
+
+  if (data instanceof AppError) {
+    next(data)
+    return
+  }
+
+  return res
+    .status(200)
+    .cookie("token", data.token, {
+      maxAge: 60 * 60 * 1000,
+      httpOnly: false,
+      path: '/',
+      secure: true,
+      sameSite: 'none'
     })
-
-    if (data instanceof AppError) {
-        next(data)
-        return
-    }
-
-    return res
-        .status(200)
-        .cookie("token", data.token, {
-            maxAge: 60 * 60 * 1000,
-            httpOnly: false,
-            path: '/',
-            secure: false, 
-            sameSite: 'lax'
-        })
-        .json({ status: 'success', message: 'Anda berhasil login', data, })
+    .json({ status: 'success', message: 'Anda berhasil login', data, })
 }
 
 export const logoutOperator = async (
