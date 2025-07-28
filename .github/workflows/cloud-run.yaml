@@ -46,6 +46,8 @@ jobs:
           DOCKER_BUILDKIT: 1
         run: |
           docker build \
+            --build-arg DATABASE_URL=${{ env.DATABASE_URL }} \
+            --build-arg ACCESS_TOKEN=${{ env.ACCESS_TOKEN }} \
             -t ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:latest .
 
       - name: Push Docker images

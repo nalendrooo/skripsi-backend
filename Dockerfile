@@ -13,6 +13,13 @@ RUN npm install
 # Salin seluruh kode sumber aplikasi
 COPY . .
 
+ARG DATABASE_URL
+ARG ACCESS_TOKEN
+
+# Mengatur variabel lingkungan dengan mendukung override dari environment
+ENV DATABASE_URL=${DATABASE_URL}
+ENV VITE_STORAGE_URL=${VITE_STORAGE_URL}
+
 # Build app (jika menggunakan Next.js/Nuxt/tsc/dll)
 RUN npx prisma generate
 RUN npm run build
