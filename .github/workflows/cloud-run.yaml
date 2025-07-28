@@ -1,7 +1,7 @@
 name: Backend API CI/CD Pipeline
 
 on:
-  pull_request:
+  push:
     branches: [master]
 
 env:
