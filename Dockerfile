@@ -9,10 +9,12 @@ COPY package*.json ./
 
 # Install dependencies
 RUN npm install
-RUN npm run build
 
 # Salin seluruh kode sumber aplikasi
 COPY . .
+
+# Build app (jika menggunakan Next.js/Nuxt/tsc/dll)
+RUN npm run build
 
 # Generate Prisma Client
 RUN npx prisma generate
