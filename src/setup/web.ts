@@ -8,6 +8,8 @@ const allowedOrigins = [
   'http://localhost:5001',
   'http://34.126.178.89:5001',
   'https://frontend-203493376264.asia-southeast1.run.app',
+  'http://192.168.88.1:5001',
+  'https://192.168.88.1:5001',
 ];
 
 // Middleware CORS dengan origin dinamis
