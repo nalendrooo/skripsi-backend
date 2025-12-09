@@ -184,13 +184,23 @@ export const getDownloadListItemBalance = async ({
             cell.alignment = { horizontal: 'left' };
         });
 
+        // res.setHeader(
+        //     'Content-Type',
+        //     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        // );
+        // res.setHeader(
+        //     'Content-Disposition',
+        //     'attachment; filename=' + `List-Data-Opname(${new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' }).format(new Date())}).xlsx`
+        // );
+        const fileName = `List-Barang-(${new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' }).format(new Date())}).xlsx`;
+
+        // 1. Atur Content-Disposition menggunakan metode Express (lebih aman)
+        res.attachment(fileName);
+
+        // 2. Atur Content-Type secara eksplisit
         res.setHeader(
             'Content-Type',
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        );
-        res.setHeader(
-            'Content-Disposition',
-            'attachment; filename=' + `List-Data-Opname(${new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' }).format(new Date())}).xlsx`
         );
 
         await workbook.xlsx.write(res);
